@@ -102,6 +102,8 @@ docker exec -it technical_test_postgres psql -U postgres -d technical_test
 
 ### 1️⃣ Crear entorno virtual
 
+**Nota:** Asegúrate de tener instalado **Python 3.11.8** en tu sistema.
+
 ```bash
 py -3.11 -m venv venv
 ```
