@@ -144,6 +144,7 @@ fastapi dev app/main.py
 ```
 
 El servidor estará disponible en `http://localhost:8000`
+En `http://localhost:8000/docs` puede acceder a una visual para hacer uso de los endpoints.
 
 ---
 
