@@ -136,3 +136,262 @@ alembic upgrade head
 
 - **Email:** `admin@example.com`
 - **Contraseña:** `admin123`
+
+### 5️⃣ Ejecutar el servidor
+
+```bash
+fastapi dev app/main.py
+```
+
+El servidor estará disponible en `http://localhost:8000`
+
+---
+
+## 📚 Documentación de Rutas
+
+### Autenticación
+
+#### POST `/auth/login`
+Inicia sesión y devuelve un token JWT.
+
+**Body:**
+```json
+{
+  "username": "admin@example.com",
+  "password": "admin123"
+}
+```
+
+**Response (200):**
+```json
+{
+  "access_token": "eyJhbGc...",
+  "token_type": "bearer"
+}
+```
+
+---
+
+### Usuarios
+
+#### GET `/users/me`
+Obtiene los datos del usuario actual autenticado.
+
+**Headers:** `Authorization: Bearer <token>`
+
+**Response (200):**
+```json
+{
+  "id": 1,
+  "email": "admin@example.com",
+  "is_active": true
+}
+```
+
+#### GET `/users`
+Lista todos los usuarios.
+
+**Headers:** `Authorization: Bearer <token>`
+
+**Response (200):**
+```json
+[
+  {
+    "id": 1,
+    "email": "admin@example.com",
+    "is_active": true
+  }
+]
+```
+
+#### POST `/users`
+Crea un nuevo usuario.
+
+**Headers:** `Authorization: Bearer <token>`
+
+**Body:**
+```json
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+```
+
+**Response (200):**
+```json
+{
+  "id": 2,
+  "email": "user@example.com",
+  "is_active": true
+}
+```
+
+#### GET `/users/{user_id}`
+Obtiene un usuario por ID.
+
+**Headers:** `Authorization: Bearer <token>`
+
+**Response (200):**
+```json
+{
+  "id": 1,
+  "email": "admin@example.com",
+  "is_active": true
+}
+```
+
+#### PUT `/users/{user_id}`
+Actualiza un usuario.
+
+**Headers:** `Authorization: Bearer <token>`
+
+**Body:**
+```json
+{
+  "email": "newemail@example.com",
+  "is_active": true
+}
+```
+
+**Response (200):**
+```json
+{
+  "id": 1,
+  "email": "newemail@example.com",
+  "is_active": true
+}
+```
+
+#### DELETE `/users/{user_id}`
+Elimina un usuario.
+
+**Headers:** `Authorization: Bearer <token>`
+
+**Response (204)** - No Content
+
+---
+
+### Tareas
+
+#### POST `/tasks`
+Crea una nueva tarea.
+
+**Headers:** `Authorization: Bearer <token>`
+
+**Body:**
+```json
+{
+  "title": "Hacer compras",
+  "description": "Comprar leche, pan y huevos"
+}
+```
+
+**Response (201):**
+```json
+{
+  "id": 1,
+  "title": "Hacer compras",
+  "description": "Comprar leche, pan y huevos",
+  "status": "pending"
+}
+```
+
+#### GET `/tasks`
+Lista todas las tareas con paginación.
+
+**Headers:** `Authorization: Bearer <token>`
+
+**Query Parameters:**
+- `skip` (opcional): Número de registros a saltar (default: 0)
+- `limit` (opcional): Máximo de registros a devolver (default: 100)
+
+**Response (200):**
+```json
+[
+  {
+    "id": 1,
+    "title": "Hacer compras",
+    "description": "Comprar leche, pan y huevos",
+    "status": "pending"
+  }
+]
+```
+
+#### GET `/tasks/{task_id}`
+Obtiene una tarea por ID.
+
+**Headers:** `Authorization: Bearer <token>`
+
+**Response (200):**
+```json
+{
+  "id": 1,
+  "title": "Hacer compras",
+  "description": "Comprar leche, pan y huevos",
+  "status": "pending"
+}
+```
+
+#### PUT `/tasks/{task_id}`
+Actualiza una tarea completa.
+
+**Headers:** `Authorization: Bearer <token>`
+
+**Body:**
+```json
+{
+  "title": "Hacer compras actualizado",
+  "description": "Comprar más cosas",
+  "status": "in_progress"
+}
+```
+
+**Response (200):**
+```json
+{
+  "id": 1,
+  "title": "Hacer compras actualizado",
+  "description": "Comprar más cosas",
+  "status": "in_progress"
+}
+```
+
+#### PUT `/tasks/{task_id}/status`
+Actualiza solo el estado de una tarea.
+
+**Headers:** `Authorization: Bearer <token>`
+
+**Body:**
+```json
+{
+  "status": "completed"
+}
+```
+
+**Response (200):**
+```json
+{
+  "id": 1,
+  "title": "Hacer compras",
+  "description": "Comprar leche, pan y huevos",
+  "status": "completed"
+}
+```
+
+#### DELETE `/tasks/{task_id}`
+Elimina una tarea.
+
+**Headers:** `Authorization: Bearer <token>`
+
+**Response (204)** - No Content
+
+---
+
+## ⚡ Estados de Tarea
+
+Las tareas pueden tener los siguientes estados:
+
+- `pending` - Pendiente
+- `in_progress` - En progreso
+- `completed` - Completada
+
