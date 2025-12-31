@@ -9,8 +9,6 @@ pwd_context = CryptContext(
     deprecated="auto"
 )
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
 def hash_password(password: str) -> str:
     return pwd_context.hash(password)
 
@@ -22,9 +20,9 @@ def create_access_token(
     expires_delta: Optional[timedelta] = None
 ) -> str:
     if expires_delta:
-        expire = datetime.now() + expires_delta
+        expire = datetime.utcnow() + expires_delta
     else:
-        expire = datetime.now() + settings.access_token_expire_delta
+        expire = datetime.utcnow() + settings.access_token_expire_delta
 
     to_encode = {
         "sub": subject,
